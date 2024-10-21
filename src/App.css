@@ -1,18 +1,23 @@
 /* General body styling */
 body {
+  margin: 0;
   font-family: Arial, sans-serif;
-  background-color: #f0f8ff; /* Light background */
-  color: #333;
+  background-color: #f0f0f0;
 }
 
 /* Navigation bar styling */
-nav ul {
-  background-color: #0044cc;
+nav {
+  background-color: #4CAF50;
   padding: 10px;
+}
+
+nav ul {
   list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
   display: flex;
   justify-content: space-around;
-  border-radius: 10px;
 }
 
 nav ul li {
@@ -20,56 +25,86 @@ nav ul li {
 }
 
 nav ul li a {
-  color: white;
+  color: white; /* White text for better readability */
+  text-align: center;
+  padding: 14px 20px;
   text-decoration: none;
+  font-size: 18px;
   font-weight: bold;
-  padding: 10px 20px;
-  border-radius: 5px;
-  transition: background-color 0.3s;
 }
 
 nav ul li a:hover {
-  background-color: #003399;
-}
-
-/* StreamList input form */
-form {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-}
-
-input[type="text"] {
-  padding: 10px;
-  width: 300px;
-  border: 2px solid #0044cc;
+  background-color: #45a049;
   border-radius: 5px;
 }
 
+/* Main content styling */
+main {
+  padding: 20px;
+  margin-top: 20px;
+}
+
+/* Button styling */
 button {
-  padding: 10px;
-  margin-left: 10px;
-  background-color: #0044cc;
+  background-color: #4CAF50;
   color: white;
+  padding: 10px 15px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
 
 button:hover {
-  background-color: #003399;
+  background-color: #45a049;
 }
 
-/* Movies page styling */
-.movies-list {
-  margin-top: 20px;
-  padding: 20px;
+/* Input styling */
+input {
+  padding: 10px;
+  width: 80%;
+  margin: 10px 0;
+  box-sizing: border-box;
+  border: 2px solid #4CAF50;
+  border-radius: 5px;
+}
+
+/* Movie list styling */
+.movie-list {
+  list-style-type: none;
+  padding: 0;
 }
 
 .movie-item {
-  padding: 10px;
-  background-color: #e0e0e0;
+  background-color: white;
+  margin: 10px 0;
+  padding: 15px;
   border-radius: 5px;
-  margin-bottom: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.movie-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.watched {
+  color: green;
+}
+
+.not-watched {
+  color: red;
+}
+
+/* Footer style */
+footer {
+  text-align: center;
+  padding: 20px;
+  background-color: #4CAF50;
+  color: white;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
 }
