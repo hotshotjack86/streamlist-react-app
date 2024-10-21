@@ -12,7 +12,7 @@ function Movies({ movies, updateMovie, deleteMovie, toggleWatch }) {
                 type="text"
                 value={movie.title}
                 onChange={(e) => updateMovie(index, e.target.value)}
-                onBlur={() => updateMovie(index, movie.title, false)} // Stop editing on input blur
+                onBlur={() => updateMovie(index, movie.title, false)}
               />
             ) : (
               <span style={{ textDecoration: movie.watched ? 'line-through' : 'none' }}>

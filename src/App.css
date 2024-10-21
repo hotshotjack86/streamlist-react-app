@@ -1,110 +1,171 @@
-/* General body styling */
+/* General styling for body */
 body {
-  margin: 0;
   font-family: Arial, sans-serif;
-  background-color: #f0f0f0;
+  background-color: #f4f4f9;
+  margin: 0;
+  padding: 0;
 }
 
-/* Navigation bar styling */
+/* Navigation Bar Styling */
 nav {
-  background-color: #4CAF50;
-  padding: 10px;
+  background-color: #333;
+  padding: 1rem;
 }
 
 nav ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
   display: flex;
   justify-content: space-around;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 }
 
 nav ul li {
-  display: inline;
+  margin: 0 10px;
 }
 
 nav ul li a {
-  color: white; /* White text for better readability */
-  text-align: center;
-  padding: 14px 20px;
+  color: white;
   text-decoration: none;
-  font-size: 18px;
-  font-weight: bold;
+  font-size: 1.2rem;
+  padding: 10px 15px;
+  transition: background-color 0.3s ease;
 }
 
 nav ul li a:hover {
-  background-color: #45a049;
+  background-color: #555;
   border-radius: 5px;
 }
 
-/* Main content styling */
-main {
+/* Main content layout */
+div {
   padding: 20px;
-  margin-top: 20px;
 }
 
-/* Button styling */
-button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+/* Cart System */
+h2 {
+  color: #333;
 }
 
-button:hover {
-  background-color: #45a049;
-}
-
-/* Input styling */
-input {
-  padding: 10px;
-  width: 80%;
-  margin: 10px 0;
-  box-sizing: border-box;
-  border: 2px solid #4CAF50;
-  border-radius: 5px;
-}
-
-/* Movie list styling */
-.movie-list {
-  list-style-type: none;
-  padding: 0;
-}
-
-.movie-item {
-  background-color: white;
-  margin: 10px 0;
-  padding: 15px;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.cart-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: white;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.movie-title {
-  font-size: 20px;
-  font-weight: bold;
+.cart-item span {
+  font-size: 1.1rem;
+  color: #333;
 }
 
-.watched {
-  color: green;
-}
-
-.not-watched {
-  color: red;
-}
-
-/* Footer style */
-footer {
-  text-align: center;
-  padding: 20px;
-  background-color: #4CAF50;
+.cart-item button {
+  background-color: #333;
   color: white;
-  position: fixed;
-  width: 100%;
-  bottom: 0;
+  border: none;
+  padding: 5px 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border-radius: 5px;
+}
+
+.cart-item button:hover {
+  background-color: #555;
+}
+
+/* Styling for quantity buttons */
+.cart-item .quantity-buttons {
+  display: flex;
+  align-items: center;
+}
+
+.cart-item .quantity-buttons button {
+  background-color: #007bff;
+  color: white;
+  margin: 0 5px;
+}
+
+.cart-item .quantity-buttons button:hover {
+  background-color: #0056b3;
+}
+
+.cart-item .quantity-display {
+  font-size: 1.2rem;
+  margin: 0 10px;
+}
+
+/* Total price styling */
+.total-price {
+  font-size: 1.5rem;
+  text-align: right;
+  margin-top: 20px;
+  color: #333;
+}
+
+/* Buttons for editing and deleting */
+button.edit-btn, button.delete-btn {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button.edit-btn:hover, button.delete-btn:hover {
+  background-color: #d32f2f;
+}
+
+/* StreamList Page */
+.streamlist-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.streamlist-form input[type="text"] {
+  padding: 10px;
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 300px;
+}
+
+.streamlist-form button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.streamlist-form button:hover {
+  background-color: #218838;
+}
+
+/* Responsive styling for smaller screens */
+@media (max-width: 600px) {
+  .cart-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  nav ul {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .streamlist-form input[type="text"] {
+    width: 100%;
+  }
 }
