@@ -10,16 +10,31 @@ function App() {
   const [movies, setMovies] = useState([]);
 
   // Function to add a movie to the list
-  const addMovie = (movie) => {
-    try {
-      if (movie.trim() === "") {
-        throw new Error("Movie title cannot be empty.");
-      }
-      console.log('Adding movie:', movie);  // Log the movie being added
-      setMovies([...movies, movie]); // Add the new movie to the list
-    } catch (error) {
-      console.error("Error adding movie:", error.message); // Handle any errors
-    }
+  const addMovie = (movieTitle) => {
+    const newMovie = { title: movieTitle, watched: false, isEditing: false };
+    setMovies([...movies, newMovie]);
+  };
+
+  // Function to delete a movie from the list
+  const deleteMovie = (index) => {
+    const updatedMovies = movies.filter((_, i) => i !== index);
+    setMovies(updatedMovies);
+  };
+
+  // Function to mark a movie as watched/unwatched
+  const toggleWatch = (index) => {
+    const updatedMovies = movies.map((movie, i) =>
+      i === index ? { ...movie, watched: !movie.watched } : movie
+    );
+    setMovies(updatedMovies);
+  };
+
+  // Function to edit a movie title
+  const updateMovie = (index, newTitle, startEdit = false) => {
+    const updatedMovies = movies.map((movie, i) =>
+      i === index ? { ...movie, title: newTitle, isEditing: startEdit } : movie
+    );
+    setMovies(updatedMovies);
   };
 
   return (
@@ -36,7 +51,10 @@ function App() {
 
         <Routes>
           <Route path="/" element={<StreamList addMovie={addMovie} />} />
-          <Route path="/movies" element={<Movies movies={movies} />} />
+          <Route
+            path="/movies"
+            element={<Movies movies={movies} updateMovie={updateMovie} deleteMovie={deleteMovie} toggleWatch={toggleWatch} />}
+          />
           <Route path="/cart" element={<Cart />} />
           <Route path="/about" element={<About />} />
         </Routes>
