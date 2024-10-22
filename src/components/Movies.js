@@ -12,7 +12,7 @@ function Movies({ movies, updateMovie, deleteMovie, toggleWatch }) {
                 type="text"
                 value={movie.title}
                 onChange={(e) => updateMovie(index, e.target.value)}
-                onBlur={() => updateMovie(index, movie.title, false)}
+                onBlur={() => updateMovie(index, movie.title, false)} // Stop editing on input blur
               />
             ) : (
               <span style={{ textDecoration: movie.watched ? 'line-through' : 'none' }}>
@@ -23,7 +23,12 @@ function Movies({ movies, updateMovie, deleteMovie, toggleWatch }) {
               {movie.watched ? 'Unwatch' : 'Watch'}
             </button>
             <button onClick={() => updateMovie(index, movie.title, true)}>Edit</button>
-            <button onClick={() => deleteMovie(index)}>Delete</button>
+            <button onClick={() => {
+              console.log('Delete movie clicked for index:', index);
+              deleteMovie(index);
+            }}>
+              Delete
+            </button>
           </li>
         ))}
       </ul>
