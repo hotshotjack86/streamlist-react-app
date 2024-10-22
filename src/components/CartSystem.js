@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import subscriptions from '../Data'; // Importing Data.js with the correct path
 
 function CartSystem() {
   const [cart, setCart] = useState(() => {
@@ -26,7 +27,7 @@ function CartSystem() {
   };
 
   const increaseQuantity = (id) => {
-    const updatedCart = cart.map(item => 
+    const updatedCart = cart.map(item =>
       item.id === id ? { ...item, quantity: item.quantity + 1 } : item
     );
     setCart(updatedCart);
@@ -51,21 +52,30 @@ function CartSystem() {
 
   return (
     <div>
+      <h2>Available Subscriptions</h2>
+      {subscriptions.map((item) => (
+        <div key={item.id}>
+          <span>{item.name}</span>
+          <span> - ${item.price}</span>
+          <button onClick={() => addToCart(item)}>Add to Cart</button>
+        </div>
+      ))}
+
       <h2>Your Cart</h2>
       {cart.length > 0 ? (
-        <>
-          {cart.map(item => (
-            <div key={item.id} className="cart-item">
+        <div>
+          {cart.map((item) => (
+            <div key={item.id}>
               <span>{item.name}</span>
-              <span>Price: ${item.price.toFixed(2)}</span>
-              <span>Quantity: {item.quantity}</span>
+              <span> - ${item.price}</span>
+              <span> Quantity: {item.quantity}</span>
               <button onClick={() => increaseQuantity(item.id)}>+</button>
               <button onClick={() => decreaseQuantity(item.id)}>-</button>
               <button onClick={() => removeFromCart(item.id)}>Remove</button>
             </div>
           ))}
           <h3>Total Price: ${calculateTotalPrice().toFixed(2)}</h3>
-        </>
+        </div>
       ) : (
         <p>Your cart is empty.</p>
       )}

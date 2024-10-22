@@ -2,14 +2,15 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import StreamList from './components/StreamList';
 import Movies from './components/Movies';
-import Cart from './components/Cart';
+import CartSystem from './components/CartSystem';  // Import CartSystem
 import About from './components/About';
 import './App.css';
 
 function App() {
   const [movies, setMovies] = useState([]);
+  const [cart, setCart] = useState([]);
 
-  // Function to add a movie to the list
+  // Add the addMovie function here
   const addMovie = (movie) => {
     if (!movie.trim()) {
       alert("Movie name cannot be empty");
@@ -18,25 +19,31 @@ function App() {
     setMovies([...movies, { title: movie, watched: false, isEditing: false }]);
   };
 
-  // Function to toggle the watched status of a movie
-  const toggleWatch = (index) => {
-    const updatedMovies = [...movies];
-    updatedMovies[index].watched = !updatedMovies[index].watched;
-    setMovies(updatedMovies);
+  const addToCart = (item) => {
+    setCart([...cart, item]);
   };
 
-  // Function to edit a movie
-  const updateMovie = (index, newTitle, isEditing = false) => {
-    const updatedMovies = [...movies];
-    updatedMovies[index].title = newTitle;
-    updatedMovies[index].isEditing = isEditing;
-    setMovies(updatedMovies);
+  const removeFromCart = (id) => {
+    const updatedCart = cart.filter(item => item.id !== id);
+    setCart(updatedCart);
   };
 
-  // Function to delete a movie from the list
-  const deleteMovie = (index) => {
-    const updatedMovies = movies.filter((_, i) => i !== index);
-    setMovies(updatedMovies);
+  const increaseQuantity = (id) => {
+    const updatedCart = cart.map(item =>
+      item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+    );
+    setCart(updatedCart);
+  };
+
+  const decreaseQuantity = (id) => {
+    const updatedCart = cart.map(item =>
+      item.id === id && item.quantity > 1 ? { ...item, quantity: item.quantity - 1 } : item
+    );
+    setCart(updatedCart);
+  };
+
+  const calculateTotalPrice = () => {
+    return cart.reduce((total, item) => total + item.price * item.quantity, 0);
   };
 
   return (
@@ -53,8 +60,8 @@ function App() {
 
         <Routes>
           <Route path="/" element={<StreamList addMovie={addMovie} />} />
-          <Route path="/movies" element={<Movies movies={movies} updateMovie={updateMovie} deleteMovie={deleteMovie} toggleWatch={toggleWatch} />} />
-          <Route path="/cart" element={<Cart />} />
+          <Route path="/movies" element={<Movies movies={movies} />} />
+          <Route path="/cart" element={<CartSystem cart={cart} removeFromCart={removeFromCart} increaseQuantity={increaseQuantity} decreaseQuantity={decreaseQuantity} calculateTotalPrice={calculateTotalPrice} />} />
           <Route path="/about" element={<About />} />
         </Routes>
       </div>
