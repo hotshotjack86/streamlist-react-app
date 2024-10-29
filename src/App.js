@@ -1,18 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import StreamList from './components/StreamList';
 import Movies from './components/Movies';
 import CartSystem from './components/CartSystem';
 import About from './components/About';
+import MovieSearch from './components/MovieSearch'; // New component for TMDB search
 import subscriptions from './Data';  // Importing data from Data.js
 import './App.css';
 
 function App() {
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState(() => {
+    const savedMovies = localStorage.getItem('movies');
+    return savedMovies ? JSON.parse(savedMovies) : [];
+  });
+
   const [cart, setCart] = useState(() => {
     const savedCart = localStorage.getItem('cart');
     return savedCart ? JSON.parse(savedCart) : [];
   });
+
+  // Save movies and cart to localStorage on updates
+  useEffect(() => {
+    localStorage.setItem('movies', JSON.stringify(movies));
+  }, [movies]);
+
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }, [cart]);
 
   // Movie Functions
   const addMovie = (movie) => {
@@ -49,14 +63,12 @@ function App() {
     } else {
       const updatedCart = [...cart, { ...item, quantity: 1 }];
       setCart(updatedCart);
-      localStorage.setItem('cart', JSON.stringify(updatedCart));
     }
   };
 
   const removeFromCart = (id) => {
     const updatedCart = cart.filter(item => item.id !== id);
     setCart(updatedCart);
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
   };
 
   const increaseQuantity = (id) => {
@@ -64,7 +76,6 @@ function App() {
       item.id === id ? { ...item, quantity: item.quantity + 1 } : item
     );
     setCart(updatedCart);
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
   };
 
   const decreaseQuantity = (id) => {
@@ -72,7 +83,6 @@ function App() {
       item.id === id && item.quantity > 1 ? { ...item, quantity: item.quantity - 1 } : item
     );
     setCart(updatedCart);
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
   };
 
   const calculateTotalPrice = () => {
@@ -88,6 +98,7 @@ function App() {
             <li><Link to="/movies">Movies</Link></li>
             <li><Link to="/cart">Cart</Link></li>
             <li><Link to="/about">About</Link></li>
+            <li><Link to="/search">Search Movies</Link></li> {/* New link for TMDB search */}
           </ul>
         </nav>
 
@@ -96,6 +107,7 @@ function App() {
           <Route path="/movies" element={<Movies movies={movies} updateMovie={updateMovie} deleteMovie={deleteMovie} toggleWatch={toggleWatch} />} />
           <Route path="/cart" element={<CartSystem cart={cart} removeFromCart={removeFromCart} increaseQuantity={increaseQuantity} decreaseQuantity={decreaseQuantity} calculateTotalPrice={calculateTotalPrice} />} />
           <Route path="/about" element={<About />} />
+          <Route path="/search" element={<MovieSearch />} /> {/* Route for TMDB search */}
         </Routes>
 
         {/* Display available subscriptions */}
