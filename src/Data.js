@@ -1,20 +1,8 @@
 // Data.js
 const subscriptions = [
-    {
-      id: 1,
-      name: 'Basic Plan',
-      price: 9.99
-    },
-    {
-      id: 2,
-      name: 'Standard Plan',
-      price: 14.99
-    },
-    {
-      id: 3,
-      name: 'Premium Plan',
-      price: 19.99
-    }
+    { id: 1, name: 'Netflix', price: 10 },
+    { id: 2, name: 'Hulu', price: 7 },
+    { id: 3, name: 'Disney+', price: 8 }
   ];
   
   export default subscriptions;

@@ -1,29 +1,25 @@
 import React, { useState } from 'react';
 
 function StreamList({ addMovie }) {
-  const [movieTitle, setMovieTitle] = useState('');
+  const [movie, setMovie] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (movieTitle.trim()) {
-      addMovie(movieTitle);
-      setMovieTitle(''); // Clear the input field after adding
-    } else {
-      alert('Please enter a movie title');
-    }
+    addMovie(movie);
+    setMovie(''); // Clear the input field after submission
   };
 
   return (
     <div>
-      <h1>StreamList</h1>
+      <h2>Add a Movie</h2>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          value={movieTitle}
-          onChange={(e) => setMovieTitle(e.target.value)}
-          placeholder="Enter movie or show name"
+          value={movie}
+          onChange={(e) => setMovie(e.target.value)}
+          placeholder="Enter movie title"
         />
-        <button type="submit">Add Movie</button>
+        <button type="submit">Add to StreamList</button>
       </form>
     </div>
   );
