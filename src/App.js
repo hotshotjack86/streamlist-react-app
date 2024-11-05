@@ -1,61 +1,36 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link, Navigate } from 'react-router-dom';
 import StreamList from './components/StreamList';
 import Movies from './components/Movies';
 import CartSystem from './components/CartSystem';
 import About from './components/About';
-import MovieSearch from './components/MovieSearch'; // New component for TMDB search
-import subscriptions from './Data';  // Importing data from Data.js
+import MovieSearch from './components/MovieSearch'; 
+import Login from './components/Login';  // Import Login component
+import subscriptions from './Data';
 import './App.css';
 
 function App() {
-  const [movies, setMovies] = useState(() => {
-    const savedMovies = localStorage.getItem('movies');
-    return savedMovies ? JSON.parse(savedMovies) : [];
-  });
+  const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('user')) || null);
+  const [cart, setCart] = useState(() => JSON.parse(localStorage.getItem('cart')) || []);
 
-  const [cart, setCart] = useState(() => {
-    const savedCart = localStorage.getItem('cart');
-    return savedCart ? JSON.parse(savedCart) : [];
-  });
-
-  // Save movies and cart to localStorage on updates
   useEffect(() => {
-    localStorage.setItem('movies', JSON.stringify(movies));
-  }, [movies]);
+    if (user) {
+      localStorage.setItem('user', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('user');
+    }
+  }, [user]);
 
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
 
-  // Movie Functions
-  const addMovie = (movie) => {
-    if (!movie.trim()) {
-      alert("Movie name cannot be empty");
-      return;
-    }
-    setMovies([...movies, { title: movie, watched: false, isEditing: false }]);
+  // Logout function to clear user data
+  const handleLogout = () => {
+    setUser(null);
   };
 
-  const toggleWatch = (index) => {
-    const updatedMovies = [...movies];
-    updatedMovies[index].watched = !updatedMovies[index].watched;
-    setMovies(updatedMovies);
-  };
-
-  const updateMovie = (index, newTitle, isEditing = false) => {
-    const updatedMovies = [...movies];
-    updatedMovies[index].title = newTitle;
-    updatedMovies[index].isEditing = isEditing;
-    setMovies(updatedMovies);
-  };
-
-  const deleteMovie = (index) => {
-    const updatedMovies = movies.filter((_, i) => i !== index);
-    setMovies(updatedMovies);
-  };
-
-  // Cart Functions
+  // Add to Cart function to manage subscriptions
   const addToCart = (item) => {
     const existingItem = cart.find(cartItem => cartItem.id === item.id);
     if (existingItem) {
@@ -64,29 +39,6 @@ function App() {
       const updatedCart = [...cart, { ...item, quantity: 1 }];
       setCart(updatedCart);
     }
-  };
-
-  const removeFromCart = (id) => {
-    const updatedCart = cart.filter(item => item.id !== id);
-    setCart(updatedCart);
-  };
-
-  const increaseQuantity = (id) => {
-    const updatedCart = cart.map(item =>
-      item.id === id ? { ...item, quantity: item.quantity + 1 } : item
-    );
-    setCart(updatedCart);
-  };
-
-  const decreaseQuantity = (id) => {
-    const updatedCart = cart.map(item =>
-      item.id === id && item.quantity > 1 ? { ...item, quantity: item.quantity - 1 } : item
-    );
-    setCart(updatedCart);
-  };
-
-  const calculateTotalPrice = () => {
-    return cart.reduce((total, item) => total + item.price * item.quantity, 0);
   };
 
   return (
@@ -98,19 +50,25 @@ function App() {
             <li><Link to="/movies">Movies</Link></li>
             <li><Link to="/cart">Cart</Link></li>
             <li><Link to="/about">About</Link></li>
-            <li><Link to="/search">Search Movies</Link></li> {/* New link for TMDB search */}
+            <li><Link to="/search">Search Movies</Link></li>
+            {user ? (
+              <li><button onClick={handleLogout}>Logout</button></li>
+            ) : (
+              <li><Link to="/login">Login</Link></li>
+            )}
           </ul>
         </nav>
 
         <Routes>
-          <Route path="/" element={<StreamList addMovie={addMovie} />} />
-          <Route path="/movies" element={<Movies movies={movies} updateMovie={updateMovie} deleteMovie={deleteMovie} toggleWatch={toggleWatch} />} />
-          <Route path="/cart" element={<CartSystem cart={cart} removeFromCart={removeFromCart} increaseQuantity={increaseQuantity} decreaseQuantity={decreaseQuantity} calculateTotalPrice={calculateTotalPrice} />} />
+          <Route path="/" element={user ? <StreamList /> : <Navigate to="/login" />} />
+          <Route path="/movies" element={user ? <Movies /> : <Navigate to="/login" />} />
+          <Route path="/cart" element={user ? <CartSystem cart={cart} /> : <Navigate to="/login" />} />
           <Route path="/about" element={<About />} />
-          <Route path="/search" element={<MovieSearch />} /> {/* Route for TMDB search */}
+          <Route path="/search" element={<MovieSearch />} />
+          <Route path="/login" element={<Login onLoginSuccess={setUser} />} />
         </Routes>
 
-        {/* Display available subscriptions */}
+        {/* Available Subscriptions */}
         <h2>Available Subscriptions</h2>
         {subscriptions.map((item) => (
           <div key={item.id}>
